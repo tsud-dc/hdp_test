@@ -8,9 +8,9 @@ python3 -m venv isilon_hadoop_tools
 source isilon_hadoop_tools/bin/activate
 pip install isilon_hadoop_tools
 
-isilon_create_users --zone=System  --onefs-user=root --onefs-password=Password123! --dist=cdp --start-uid=5000 --start-gid=5000   X.X.X.X --no-verify
+isilon_create_users --zone=System  --onefs-user=root --onefs-password=Password123! --dist=cdp --start-uid=5000 --start-gid=5000   192.168.1.21 --no-verify
 
-isilon_create_directories  --zone=System --no-verify --onefs-user=root --onefs-password=Password123! --dist=cdp  X.X.X.X
+isilon_create_directories  --zone=System --no-verify --onefs-user=root --onefs-password=Password123! --dist=cdp  192.168.1.21
 
 #ls -al
 #chmod 777 xxxxxxxxxxx-System-cdp.sh
