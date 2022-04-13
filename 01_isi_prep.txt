@@ -1,0 +1,25 @@
+#!/bin/sh
+
+isi license add --evaluation=SMARTCONNECT_ADVANCED
+isi license add --evaluation=HDFS
+
+isi services hdfs enable
+isi services -a | grep hdfs
+
+isi network subnets modify groupnet0.subnet0 --sc-service-addr=192.168.1.100 --sc-service-name=ssip-isilon.demo.local
+isi network pools create --id=groupnet0:subnet0:pool1 --ranges=192.168.1.60-192.168.1.99  --access-zone=System  --alloc-method=dynamic  --ifaces=1-4:ext-1 --sc-subnet=subnet0  --sc-dns-zone=cdp.demo.local    --description=cdp_pool
+
+#open PowerShell prompt from Start Menu
+#Add-DnsServerZoneDelegation -Name "demo.local" -ChildZoneName "cdp" -NameServer "ssip-isilon.demo.local" -IPAddress 192.168.1.100
+
+
+###Hadoop root setup
+mkdir /ifs/cdp7
+mkdir /ifs/cdp7/hadoop-root
+chmod 755 /ifs/cdp7
+chmod 755 /ifs/cdp7/hadoop-root
+cd /ifs/cdp7/hadoop-root
+touch system.txt
+touch cdp.txt
+
+isi hdfs settings modify --zone=System --root-directory=/ifs/cdp7/hadoop-root

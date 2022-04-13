@@ -1,0 +1,27 @@
+#!/bin/sh
+
+###Onefs RBAC setup
+isi auth roles create --name=hdfs_access --description="Bypass FS permissions" --zone=System
+isi auth roles modify hdfs_access --add-priv=ISI_PRIV_IFS_RESTORE --zone=System
+isi auth roles modify hdfs_access --add-priv=ISI_PRIV_IFS_BACKUP --zone=System
+
+isi auth roles modify hdfs_access --add-user=hdfs --zone=System
+isi auth roles view hdfs_access --zone=System
+isi_for_array "isi auth mapping flush --all"
+isi_for_array "isi auth cache flush --all"
+
+
+
+
+###join AD & setup for rfc2307
+isi auth ads create demo.local administrator --password=Password123!
+isi auth ads list
+isi zone zones modify System --add-auth-providers=lsa-activedirectory-provider:DEMO.LOCAL
+isi zone zones list -v
+isi hdfs settings modify --zone=System --authentication-mode=kerberos_only
+
+isi auth ads modify DEMO.LOCAL --sfu-support=rfc2307
+isi auth ads modify DEMO.LOCAL --store-sfu-mappings=true
+isi auth ads modify DEMO.LOCAL --allocate-uids=false
+isi auth ads modify DEMO.LOCAL --allocate-gids=false
+isi auth ads modify DEMO.LOCAL --assume-default-domain=true
