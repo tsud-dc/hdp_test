@@ -35,7 +35,6 @@ echo never > /sys/kernel/mm/transparent_hugepage/enabled
 
 #vi /etc/sysctl.conf 
 #(Add at the end) G, o - esc:wq
-	
 ##vm.swappiness=10
 
 yum -y install krb5-workstation krb5-libs openldap-clients wget
