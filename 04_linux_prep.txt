@@ -1,5 +1,5 @@
 #!/bin/sh
-
+yum install -y python3 python3-pip python3-virtualenv
 ###Linux Client Prep
 yum -y update
 yum -y groupinstall "Development tools"
@@ -25,16 +25,17 @@ echo never > /sys/kernel/mm/transparent_hugepage/enabled
 
 #vi /etc/rc.local
 #
-#if test -f /sys/kernel/mm/transparent_hugepage/enabled; then
-#   echo never > /sys/kernel/mm/transparent_hugepage/enabled
-#fi
-#if test -f /sys/kernel/mm/transparent_hugepage/defrag; then
-#   echo never > /sys/kernel/mm/transparent_hugepage/defrag
-#fi
+cat <<-EOS >> /etc/rc.local
+if test -f /sys/kernel/mm/transparent_hugepage/enabled; then
+   echo never > /sys/kernel/mm/transparent_hugepage/enabled
+fi
+if test -f /sys/kernel/mm/transparent_hugepage/defrag; then
+   echo never > /sys/kernel/mm/transparent_hugepage/defrag
+fi
 
 
 #vi /etc/sysctl.conf 
 #(Add at the end) G, o - esc:wq
-##vm.swappiness=10
+echo vm.swappiness=10 >> /etc/sysctl.conf
 
 yum -y install krb5-workstation krb5-libs openldap-clients wget
